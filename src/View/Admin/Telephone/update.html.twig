@@ -1,0 +1,52 @@
+{% extends "base.html.twig" %}
+{% block title %}ADMIN - {{ parent() }} - Update d'un Telephone {% endblock %}
+
+{% block body %}
+    <h1>Update Telephone</h1>
+
+    <form method="post" enctype="multipart/form-data">
+
+        <div class="mb-3">
+            <input type="text" class="form-control" placeholder="Saisir un titre" name="Titre" value="{{ telephone.Titre }}">
+        </div>
+
+        <div class="mb-3">
+            <textarea class="form-control" name="Description" rows="3">{{ telephone.Description }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <input type="date" class="form-control" name="DatePublication" value="{{ telephone.DatePublication|date("Y-m-d") }}">
+        </div>
+
+        <div class="mb-3">
+            <select class="form-select" name="Auteur">
+                <option value="Enzo" {% if(telephone.Auteur =="Enzo")%}selected{% endif %}>Enzo</option>
+                <option value="Lukas" {% if(telephone.Auteur =="Lukas")%}selected{% endif %}>Lukas</option>
+                <option value="Rémi" {% if(telephone.Auteur =="Rémi")%}selected{% endif %}>Rémi</option>
+                <option value="Bastien" {% if(telephone.Auteur =="Bastien")%}selected{% endif %}>Bastien</option>
+                <option value="Loup" {% if(telephone.Auteur =="Loup")%}selected{% endif %}>Loup</option>
+                <option value="Kylian" {% if(telephone.Auteur =="Kylian")%}selected{% endif %}>Kylian</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <input type="file" class="custom-file-input" name="Image">
+        </div>
+
+        {% if file_exist( './uploads/images/'~telephone.ImageRepository~'/'~telephone.ImageFileName ) and telephone.ImageFileName !="" %}
+            <p>Image Actuelle :</p>
+            <p>
+                <img src="/uploads/images/{{ telephone.ImageRepository }}/{{ telephone.ImageFileName }}" class="img-thumbnail"/>
+            </p>
+            <input type="hidden" name="ImageRepository" value="{{ telephone.ImageRepository }}">
+            <input type="hidden" name="ImageFileName" value="{{ telephone.ImageFileName }}">
+        {% endif %}
+
+
+
+
+        <button type="submit" class="btn btn-primary">Valider</button>
+    </form>
+
+
+{% endblock %}

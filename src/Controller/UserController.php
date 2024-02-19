@@ -35,7 +35,7 @@ class UserController extends AbstractController
                         "Email" => $user->getMail(),
                         "Roles" => $user->getRoles()
                     ];
-                    header("Location:/AdminArticle/list");
+                    header("Location:/AdminTelephone/list");
                 }else{
                     throw new \Exception("Mot de passe incorrect pour {$_POST["mail"]}");
                 }
@@ -45,7 +45,7 @@ class UserController extends AbstractController
 
 
             //Créer les sessions sinon Lever une Exception
-            // Et rediriger vers /AdminArticle/list
+            // Et rediriger vers /AdminTelephone/list
         }else{
             return $this->twig->render("User/login.html.twig");
         }
@@ -130,6 +130,4 @@ class UserController extends AbstractController
             "roles" => $user->getRoles()
         ]);
     }
-
-
 }

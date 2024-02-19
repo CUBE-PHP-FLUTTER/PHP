@@ -1,0 +1,13 @@
+{% extends "base.html.twig" %}
+
+{% block title%}{{ parent() }} - Nos derniers telephones{% endblock %}
+
+{% block body %}
+    <h1>Telephone en Vente</h1>
+    <ul>
+        {% for telephone in telephones %}
+            <li>{{ telephone.Marque }} - {{ telephone.Modele }}</li>
+
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -23,7 +23,6 @@ $param = (isset($url[2])) ? $url[2] : '';
 if($controller != ''){
     try{
         $class = "src\Controller\\".$controller."Controller";
-        //src\Controller\ArticleController
         if(class_exists($class)){
             $controller = new $class;
             if(method_exists($class,$action)){
@@ -40,7 +39,7 @@ if($controller != ''){
         echo $controller->showMessage($e);
     }
 }else{
-    $controller = new \src\Controller\ArticleController();
+    $controller = new \src\Controller\TelephoneController();
     echo $controller->index();
 }
 

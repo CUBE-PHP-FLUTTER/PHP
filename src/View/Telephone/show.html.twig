@@ -1,0 +1,27 @@
+{% extends "base.html.twig" %}
+{% block title %} telephone {{ telephone.titre}} - {{ parent() }}{% endblock %}
+{% block css %}
+    <link href="/assets/css/telephone.show.css" rel="stylesheet">
+{% endblock %}
+{% block body %}
+    <h1>{{ telephone.titre }}</h1>
+    <p><strong>Description :</strong>{{ telephone.description }}</p>
+    <p><strong>Auteur :</strong>{{ telephone.Auteur }}</p>
+    <p><strong>Date :</strong>{{ telephone.DatePublication|date("d/m/Y") }}</p>
+    <p>
+
+        {% if file_exist( './uploads/images/'~telephone.ImageRepository~'/'~telephone.ImageFileName ) and telephone.ImageFileName !="" %}
+
+            <img src="/uploads/images/{{ telephone.ImageRepository }}/{{ telephone.ImageFileName }}" class="img-thumbnail"/>
+
+
+        {% endif %}
+
+    </p>
+
+    <p>
+
+        <a href="/telephone/pdf/{{ telephone.id }}" class="btn btn-primary">Exporter en PDF</a>
+
+    </p>
+{%  endblock %}

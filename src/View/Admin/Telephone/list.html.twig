@@ -1,0 +1,40 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ parent() }} - Admin telephones{% endblock %}
+
+{% block body %}
+    <h1>Voici tous les téléphones</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Marque</th>
+            <th scope="col">Modèle</th>
+            <th scope="col">Prix</th>
+            <th scope="col">Date de Publication</th>
+            <th scope="col">Statut</th>
+            <th scope="col">Supprimer</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for telephone in telephones %}
+            <tr>
+                <th scope="row"><a href="/AdminTelephone/update/{{ telephone.getIDTelephone }}">{{ telephone.getIDTelephone }}</a></th>
+                <td>{{ telephone.getMarque }}</td>
+                <td>{{ telephone.getModele }}</td>
+                <td>{{ telephone.getPrix }} €</td>
+                <td>{{ telephone.getDatePublication|date('d/m/Y') }}</td>
+                <td>{{ telephone.getStatut }}</td>
+                <td>
+                    <form method="post" action="/AdminTelephone/delete">
+                        <input type="hidden" name="id" value="{{ telephone.getIDTelephone }}">
+                        <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                        {# Assurez-vous que le token CSRF est généré et passé au formulaire #}
+                        <input type="hidden" name="token" value="{{ token }}">
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

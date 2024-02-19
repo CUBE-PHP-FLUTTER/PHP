@@ -11,7 +11,7 @@ class Telephone implements \JsonSerializable {
     private int $ID_Vendeur;
     private \DateTime $DatePublication;
     private string $Statut;
-    private string $ImageFileName;
+    private ?string $ImageFileName = null;
 
     // Getters and Setters
     public function getIDTelephone(): ?int {
@@ -95,11 +95,11 @@ class Telephone implements \JsonSerializable {
         return $this;
     }
 
-    public function getImageFileName(): string {
+    public function getImageFileName(): ?string {
         return $this->ImageFileName;
     }
 
-    public function setImageFileName(string $ImageFileName): self {
+    public function setImageFileName(?string $ImageFileName): self {
         $this->ImageFileName = $ImageFileName;
         return $this;
     }
