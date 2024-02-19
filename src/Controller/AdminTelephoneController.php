@@ -8,7 +8,7 @@ class AdminTelephoneController extends AbstractController
 {
     public function list()
     {
-        UserController::haveGoodRole(["Admin"]);
+        UserController::haveGoodRole(["Administrateur"]);
         $telephones = Telephone::SqlGetAll();
         $token = bin2hex(random_bytes(32));
         $_SESSION["token"] = $token;

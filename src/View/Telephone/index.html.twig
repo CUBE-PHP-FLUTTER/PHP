@@ -1,13 +1,27 @@
 {% extends "base.html.twig" %}
 
-{% block title%}{{ parent() }} - Nos derniers telephones{% endblock %}
+{% block title %}{{ parent() }} - Téléphones en Vente{% endblock %}
 
 {% block body %}
-    <h1>Telephone en Vente</h1>
-    <ul>
-        {% for telephone in telephones %}
-            <li>{{ telephone.Marque }} - {{ telephone.Modele }}</li>
-
-        {% endfor %}
-    </ul>
+    <div class="container">
+        <h1 class="mt-4 mb-3">Téléphones en Vente</h1>
+        <div class="row">
+            {% for telephone in telephones %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100">
+                        <img class="card-img-top" src="{{ telephone.ImageFileName }}" alt="{{ telephone.Marque }} {{ telephone.Modele }}">
+                        <div class="card-body">
+                            <h4 class="card-title">{{ telephone.Marque }}</h4>
+                            <h5>{{ telephone.Modele }}</h5>
+                            <p class="card-text">{{ telephone.Caracteristiques }}</p>
+                            <h5 class="text-primary">{{ telephone.Prix }} €</h5>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">Publié le {{ telephone.DatePublication|date("d/m/Y") }}</small>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

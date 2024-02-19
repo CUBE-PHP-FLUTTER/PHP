@@ -64,7 +64,7 @@ class UserController extends AbstractController
             }
         }
         if(!$roleFound){
-            throw new \Exception("Vous dn'avez pas le bon role pour accéder à cette page");
+            throw new \Exception("Vous n'avez pas le bon role pour accéder à cette page");
         }
     }
 
@@ -130,5 +130,6 @@ class UserController extends AbstractController
             "roles" => $user->getRoles()
         ]);
     }
+
 
 }
