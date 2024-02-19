@@ -1,0 +1,41 @@
+{% extends "base.html.twig" %}
+
+{% block title%}{{ parent() }} - Admin articles{% endblock %}
+
+{% block body %}
+    <h1>Voici tous les articles</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Titre</th>
+            <th scope="col">DatePublication</th>
+            <th scope="col">Auteur</th>
+            <th scope="col">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for article in articles %}
+            <tr>
+                <th scope="row"><a href="/AdminArticle/update/{{ article.Id }}">{{ article.Id }}</a></th>
+                <td><a href="/Article/show/{{ article.Id }}">{{ article.Titre }}</a></td>
+                <td>{{ article.DatePublication|date('d/m/Y') }}
+                <td>{{ article.Auteur }}</td>
+                <td>
+                    {#
+                    <a href="/AdminArticle/delete/{{ article.Id }}"><i class="bi bi-trash"></i></a>
+                    #}
+                    <form method="post" action="/AdminArticle/delete">
+                        <input type="hidden" name="id" value="{{ article.Id }}">
+                        <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                        <input type="hidden" name="token" value="{{ token }}">
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+{% endblock %}

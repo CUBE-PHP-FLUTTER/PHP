@@ -1,0 +1,12 @@
+{% extends "base.html.twig" %}
+
+{% block title%}{{ parent() }} - Nos derniers articles{% endblock %}
+
+{% block body %}
+    <h1>Voici les 20 derniers articles</h1>
+    <ul>
+        {% for article in articles %}
+            <li>{{ article.Titre }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

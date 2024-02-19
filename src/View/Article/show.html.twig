@@ -1,0 +1,27 @@
+{% extends "base.html.twig" %}
+{% block title %} Article {{ article.titre}} - {{ parent() }}{% endblock %}
+{% block css %}
+    <link href="/assets/css/article.show.css" rel="stylesheet">
+{% endblock %}
+{% block body %}
+    <h1>{{ article.titre }}</h1>
+    <p><strong>Description :</strong>{{ article.description }}</p>
+    <p><strong>Auteur :</strong>{{ article.Auteur }}</p>
+    <p><strong>Date :</strong>{{ article.DatePublication|date("d/m/Y") }}</p>
+    <p>
+
+        {% if file_exist( './uploads/images/'~article.ImageRepository~'/'~article.ImageFileName ) and article.ImageFileName !="" %}
+
+            <img src="/uploads/images/{{ article.ImageRepository }}/{{ article.ImageFileName }}" class="img-thumbnail"/>
+
+
+        {% endif %}
+
+    </p>
+
+    <p>
+
+        <a href="/Article/pdf/{{ article.id }}" class="btn btn-primary">Exporter en PDF</a>
+
+    </p>
+{%  endblock %}
