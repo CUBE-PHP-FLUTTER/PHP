@@ -130,4 +130,5 @@ class UserController extends AbstractController
             "roles" => $user->getRoles()
         ]);
     }
+
 }

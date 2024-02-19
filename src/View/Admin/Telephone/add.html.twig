@@ -1,17 +1,28 @@
 {% extends "base.html.twig" %}
-{% block title %}ADMIN - {{ parent() }} - Ajout d'un Telephone {% endblock %}
+{% block title %}ADMIN - {{ parent() }} - Ajout d'un Téléphone {% endblock %}
 
 {% block body %}
-    <h1>Ajout Telephone</h1>
+    <h1>Ajout Téléphone</h1>
 
     <form method="post" enctype="multipart/form-data">
-
         <div class="mb-3">
-            <input type="text" class="form-control" placeholder="Saisir un titre" name="Titre">
+            <input type="text" class="form-control" placeholder="Marque" name="Marque">
         </div>
 
         <div class="mb-3">
-            <textarea class="form-control" name="Description" rows="3"></textarea>
+            <input type="text" class="form-control" placeholder="Modèle" name="Modele">
+        </div>
+
+        <div class="mb-3">
+            <textarea class="form-control" placeholder="Caractéristiques" name="Caracteristiques" rows="3"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <input type="number" class="form-control" placeholder="Prix" name="Prix">
+        </div>
+
+        <div class="mb-3">
+            <input type="number" class="form-control" placeholder="Quantité" name="Quantite">
         </div>
 
         <div class="mb-3">
@@ -19,23 +30,16 @@
         </div>
 
         <div class="mb-3">
-            <select class="form-select" name="Auteur">
-                <option value="Enzo">Enzo</option>
-                <option value="Lukas">Lukas</option>
-                <option value="Rémi">Rémi</option>
-                <option value="Bastien">Bastien</option>
-                <option value="Loup">Loup</option>
-                <option value="Kylian">Kylian</option>
+            <select class="form-select" name="Statut">
+                <option value="En stock">En stock</option>
+                <option value="Hors stock">Hors stock</option>
             </select>
         </div>
 
         <div class="mb-3">
-            <input type="file" class="custom-file-input" name="Image">
+            <input type="file" class="form-control" name="ImageFileName">
         </div>
-
 
         <button type="submit" class="btn btn-primary">Valider</button>
     </form>
-
-
 {% endblock %}
