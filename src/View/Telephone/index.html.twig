@@ -9,15 +9,15 @@
             {% for telephone in telephones %}
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="card h-100">
-                        <img class="card-img-top" src="{{ telephone.ImageFileName }}" alt="{{ telephone.Marque }} {{ telephone.Modele }}">
+                        <img class="card-img-top" src="/uploads/images/{{ telephone.getImageRepository() }}/{{ telephone.getImageFileName() }}" alt="{{ telephone.getMarque() }} {{ telephone.getModele() }}">
                         <div class="card-body">
-                            <h4 class="card-title">{{ telephone.Marque }}</h4>
-                            <h5>{{ telephone.Modele }}</h5>
-                            <p class="card-text">{{ telephone.Caracteristiques }}</p>
-                            <a href="/Telephone/show/{{telephone.IDTelephone}}" class="h5 streched-link">{{ telephone.Prix }} €</a>
+                            <h4 class="card-title">{{ telephone.getMarque() }}</h4>
+                            <h5>{{ telephone.getModele() }}</h5>
+                            <p class="card-text">{{ telephone.getCaracteristiques() }}</p>
+                            <a href="/Telephone/show/{{telephone.getIDTelephone()}}" class="h5 streched-link">{{ telephone.getPrix() }} €</a>
                         </div>
                         <div class="card-footer">
-                            <small class="text-muted">Publié le {{ telephone.DatePublication|date("d/m/Y") }}</small>
+                            <small class="text-muted">Publié le {{ telephone.getDatePublication()|date("d/m/Y") }}</small>
                         </div>
                     </div>
                 </div>

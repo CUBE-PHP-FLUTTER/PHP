@@ -153,10 +153,10 @@ class Telephone implements \JsonSerializable {
     }
 
     // Database Operations
-    public static function SqlAdd(Telephone $Telephone):int
+    public static function SqlAdd(Telephone $Telephone): int
     {
-        $requete = BDD::getInstance()->prepare("INSERT INTO Telephones (Marque, Modele, Caracteristiques, Prix, Quantite, ID_Vendeur, DatePublication, Statut, ImageFileName, longitude, latitude) VALUES(:Marque, :Modele, :Caracteristiques, :Prix, :Quantite, :ID_Vendeur, :DatePublication, :Statut, :ImageFileName, :longitude, :latitude)");
-
+        $requete = BDD::getInstance()->prepare("INSERT INTO Telephones (Marque, Modele, Caracteristiques, Prix, Quantite, ID_Vendeur, DatePublication, Statut, ImageFileName, ImageRepository, longitude, latitude) VALUES(:Marque, :Modele, :Caracteristiques, :Prix, :Quantite, :ID_Vendeur, :DatePublication, :Statut, :ImageFileName, :ImageRepository, :longitude, :latitude)");
+    
         $requete->execute([
             "Marque" => $Telephone->getMarque(),
             "Modele" => $Telephone->getModele(),
@@ -167,13 +167,15 @@ class Telephone implements \JsonSerializable {
             "DatePublication" => $Telephone->getDatePublication()->format("Y-m-d"),
             "Statut" => $Telephone->getStatut(),
             "ImageFileName" => $Telephone->getImageFileName(),
-            "Longitude" => $Telephone->getLongitude(),
-            "Latitude" => $Telephone->getLatitude(),
+            "ImageRepository" => $Telephone->getImageRepository(), // Correction du nom de la colonne
+            "longitude" => $Telephone->getLongitude(),
+            "latitude" => $Telephone->getLatitude(),
         ]);
-
+    
         return BDD::getInstance()->lastInsertId();
     }
-
+    
+    
     public static function SqlGetLast(int $nb)
     {
         $requete = BDD::getInstance()->prepare('SELECT * FROM Telephones ORDER BY ID_Telephone DESC LIMIT :limit');
@@ -260,8 +262,8 @@ class Telephone implements \JsonSerializable {
 
     public static function SqlUpdate(Telephone $Telephone)
     {
-        $requete = BDD::getInstance()->prepare("UPDATE Telephones SET Marque=:Marque, Modele=:Modele, Caracteristiques=:Caracteristiques, Prix=:Prix, Quantite=:Quantite, ID_Vendeur=:ID_Vendeur, DatePublication=:DatePublication, Statut=:Statut, ImageFileName=:ImageFileName, longitude=:longitude, latitude=:latitude WHERE ID_Telephone=:ID_Telephone");
-
+        $requete = BDD::getInstance()->prepare("UPDATE Telephones SET Marque=:Marque, Modele=:Modele, Caracteristiques=:Caracteristiques, Prix=:Prix, Quantite=:Quantite, ID_Vendeur=:ID_Vendeur, DatePublication=:DatePublication, Statut=:Statut, ImageFileName=:ImageFileName, longitude=:Longitude, latitude=:Latitude WHERE ID_Telephone=:ID_Telephone");
+    
         $bool = $requete->execute([
             "Marque" => $Telephone->getMarque(),
             "Modele" => $Telephone->getModele(),
@@ -277,6 +279,8 @@ class Telephone implements \JsonSerializable {
             "ID_Telephone" => $Telephone->getIDTelephone()
         ]);
     }
+    
+    
 
     public static function SqlSearch(string $keyword): array
     {
