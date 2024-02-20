@@ -147,8 +147,8 @@ class Telephone implements \JsonSerializable {
             "DatePublication" => $this->getDatePublication()->format("Y-m-d"),
             "Statut" => $this->getStatut(),
             "ImageFileName" => $this->getImageFileName(),
-            "longitude" => $this->getLongitude(),
-            "latitude" => $this->getLatitude(),
+            "Longitude" => $this->getLongitude(),
+            "Latitude" => $this->getLatitude(),
         ];
     }
 
@@ -167,8 +167,8 @@ class Telephone implements \JsonSerializable {
             "DatePublication" => $Telephone->getDatePublication()->format("Y-m-d"),
             "Statut" => $Telephone->getStatut(),
             "ImageFileName" => $Telephone->getImageFileName(),
-            "longitude" => $Telephone->getLongitude(),
-            "latitude" => $Telephone->getLatitude(),
+            "Longitude" => $Telephone->getLongitude(),
+            "Latitude" => $Telephone->getLatitude(),
         ]);
 
         return BDD::getInstance()->lastInsertId();
@@ -194,8 +194,8 @@ class Telephone implements \JsonSerializable {
                 ->setDatePublication(new \DateTime($TelephoneSql["DatePublication"]))
                 ->setStatut($TelephoneSql["Statut"])
                 ->setImageFileName($TelephoneSql["ImageFileName"])
-                ->setLongitude($TelephoneSql["longitude"])
-                ->setLatitude($TelephoneSql["latitude"]);
+                ->setLongitude($TelephoneSql["Longitude"])
+                ->setLatitude($TelephoneSql["Latitude"]);
             $TelephonesObjet[] = $Telephone;
         }
         return $TelephonesObjet;
@@ -219,8 +219,8 @@ class Telephone implements \JsonSerializable {
                 ->setDatePublication(new \DateTime($TelephoneSql["DatePublication"]))
                 ->setStatut($TelephoneSql["Statut"])
                 ->setImageFileName($TelephoneSql["ImageFileName"])
-                ->setLongitude($TelephoneSql["longitude"])
-                ->setLatitude($TelephoneSql["latitude"]);
+                ->setLongitude($TelephoneSql["Longitude"])
+                ->setLatitude($TelephoneSql["Latitude"]);
             $TelephonesObjet[] = $Telephone;
         }
         return $TelephonesObjet;
@@ -253,8 +253,8 @@ class Telephone implements \JsonSerializable {
             ->setDatePublication(new \DateTime($TelephoneSql["DatePublication"]))
             ->setStatut($TelephoneSql["Statut"])
             ->setImageFileName($TelephoneSql["ImageFileName"])
-            ->setLongitude($TelephoneSql["longitude"])
-            ->setLatitude($TelephoneSql["latitude"]);
+            ->setLongitude($TelephoneSql["Longitude"])
+            ->setLatitude($TelephoneSql["Latitude"]);
         return $Telephone;
     }
 
@@ -272,8 +272,8 @@ class Telephone implements \JsonSerializable {
             "DatePublication" => $Telephone->getDatePublication()->format("Y-m-d"),
             "Statut" => $Telephone->getStatut(),
             "ImageFileName" => $Telephone->getImageFileName(),
-            "longitude" => $Telephone->getLongitude(),
-            "latitude" => $Telephone->getLatitude(),
+            "Longitude" => $Telephone->getLongitude(),
+            "Latitude" => $Telephone->getLatitude(),
             "ID_Telephone" => $Telephone->getIDTelephone()
         ]);
     }
@@ -300,8 +300,8 @@ class Telephone implements \JsonSerializable {
                 ->setDatePublication(new \DateTime($TelephoneSql["DatePublication"]))
                 ->setStatut($TelephoneSql["Statut"])
                 ->setImageFileName($TelephoneSql["ImageFileName"])
-                ->setLongitude($TelephoneSql["longitude"])
-                ->setLatitude($TelephoneSql["latitude"]);
+                ->setLongitude($TelephoneSql["Longitude"])
+                ->setLatitude($TelephoneSql["Latitude"]);
             $TelephonesObjet[] = $Telephone;
         }
         return $TelephonesObjet;
