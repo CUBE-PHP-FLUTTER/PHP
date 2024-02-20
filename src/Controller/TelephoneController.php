@@ -4,7 +4,6 @@ namespace src\Controller;
 
 use Mpdf\Mpdf;
 use Mpdf\Output\Destination;
-use src\Model\BDD;
 use src\Model\Telephone;
 
 class TelephoneController extends AbstractController
@@ -20,8 +19,8 @@ class TelephoneController extends AbstractController
     public function show(int $id)
     {
         $telephone = Telephone::SqlGetById($id);
-        return $this->twig->render("Telephone/show.html.twig", [
-            "telephone" => $telephone
+        return $this->twig->render("Telephone/details.html.twig", [
+            "produit" => $telephone
         ]);
     }
 
@@ -43,16 +42,18 @@ class TelephoneController extends AbstractController
     public function fixtures()
     {
         UserController::haveGoodRole(["Administrateur"]);
-        // Exécute une requête qui vide la table (truncate table telephones)
-        $requete = BDD::getInstance()->prepare("TRUNCATE TABLE telephones")->execute();
-        // Créer 2 array PHP « jeu de donnée »
-        // - Un array PHP qui contient 6 Marques de téléphone différents
+
+        // Supprimer tous les enregistrements existants dans la table des téléphones
+        Telephone::SqlTruncateTable();
+
+        // Jeu de données pour les marques et modèles de téléphone
         $arrayMarque = ["Apple", "Samsung", "Google", "Huawei", "Xiaomi"];
-        // - Un array PHP qui contient 6 Modèles de téléphone différents
         $arrayModele = ["iPhone 13", "Galaxy S21", "Pixel 6", "P40", "Mi 11"];
-        // Créer une variable Datetime (date du jour)
+
+        // Date actuelle
         $dateDuJour = new \DateTime();
 
+        // Insertion de 200 entrées de données de téléphone avec des valeurs aléatoires
         for ($i = 1; $i <= 200; $i++) {
             $dateDuJour->modify("+1 day");
             shuffle($arrayMarque);
@@ -65,7 +66,9 @@ class TelephoneController extends AbstractController
                 ->setQuantite(100)
                 ->setIDVendeur(1)
                 ->setDatePublication($dateDuJour)
-                ->setStatut("En stock");
+                ->setStatut("En stock")
+                ->setLongitude(mt_rand(-180, 180)) // Ajout de la longitude aléatoire
+                ->setLatitude(mt_rand(-90, 90));   // Ajout de la latitude aléatoire
             Telephone::SqlAdd($telephone);
         }
 

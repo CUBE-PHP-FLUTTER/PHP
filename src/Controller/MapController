@@ -1,0 +1,44 @@
+<?php
+
+namespace src\Controller;
+
+use src\Model\Telephone;
+
+class MapController extends AbstractController
+{
+    public function show(int $id)
+    {
+        $telephone = Telephone::SqlGetById($id);
+
+        // Obtenez la longitude et la latitude du téléphone
+        $longitude = $telephone->getLongitude();
+        $latitude = $telephone->getLatitude();
+
+        // Appeler une fonction pour obtenir l'adresse à partir des coordonnées de longitude et de latitude
+        $address = $this->getAddressFromCoordinates($longitude, $latitude);
+
+        return $this->twig->render("map/show.html.twig", [
+            "telephone" => $telephone,
+            "longitude" => $longitude,
+            "latitude" => $latitude,
+            "address" => $address
+        ]);
+    }
+
+    // Fonction pour obtenir l'adresse à partir des coordonnées de longitude et de latitude
+    private function getAddressFromCoordinates($longitude, $latitude)
+    {
+        $access_token = 'Votre_access_token_Mapbox';
+        $url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' . $longitude . ',' . $latitude . '.json?access_token=' . $access_token;
+
+        $response = file_get_contents($url);
+        $data = json_decode($response, true);
+
+        if (!empty($data['features'])) {
+            $address = $data['features'][0]['place_name'];
+            return $address;
+        } else {
+            return null;
+        }
+    }
+}

@@ -12,6 +12,8 @@ class Telephone implements \JsonSerializable {
     private \DateTime $DatePublication;
     private string $Statut;
     private ?string $ImageFileName = null;
+    private ?float $longitude = null;
+    private ?float $latitude = null;
 
     // Getters and Setters
     public function getIDTelephone(): ?int {
@@ -104,6 +106,24 @@ class Telephone implements \JsonSerializable {
         return $this;
     }
 
+    public function getLongitude(): ?float {
+        return $this->longitude;
+    }
+
+    public function setLongitude(?float $longitude): self {
+        $this->longitude = $longitude;
+        return $this;
+    }
+
+    public function getLatitude(): ?float {
+        return $this->latitude;
+    }
+
+    public function setLatitude(?float $latitude): self {
+        $this->latitude = $latitude;
+        return $this;
+    }
+
     // Serialization
     public function jsonSerialize(): mixed {
         return [
@@ -117,13 +137,15 @@ class Telephone implements \JsonSerializable {
             "DatePublication" => $this->getDatePublication()->format("Y-m-d"),
             "Statut" => $this->getStatut(),
             "ImageFileName" => $this->getImageFileName(),
+            "longitude" => $this->getLongitude(),
+            "latitude" => $this->getLatitude(),
         ];
     }
 
     // Database Operations
     public static function SqlAdd(Telephone $Telephone):int
     {
-        $requete = BDD::getInstance()->prepare("INSERT INTO Telephones (Marque, Modele, Caracteristiques, Prix, Quantite, ID_Vendeur, DatePublication, Statut, ImageFileName) VALUES(:Marque, :Modele, :Caracteristiques, :Prix, :Quantite, :ID_Vendeur, :DatePublication, :Statut, :ImageFileName)");
+        $requete = BDD::getInstance()->prepare("INSERT INTO Telephones (Marque, Modele, Caracteristiques, Prix, Quantite, ID_Vendeur, DatePublication, Statut, ImageFileName, longitude, latitude) VALUES(:Marque, :Modele, :Caracteristiques, :Prix, :Quantite, :ID_Vendeur, :DatePublication, :Statut, :ImageFileName, :longitude, :latitude)");
 
         $requete->execute([
             "Marque" => $Telephone->getMarque(),
@@ -135,6 +157,8 @@ class Telephone implements \JsonSerializable {
             "DatePublication" => $Telephone->getDatePublication()->format("Y-m-d"),
             "Statut" => $Telephone->getStatut(),
             "ImageFileName" => $Telephone->getImageFileName(),
+            "longitude" => $Telephone->getLongitude(),
+            "latitude" => $Telephone->getLatitude(),
         ]);
 
         return BDD::getInstance()->lastInsertId();
@@ -159,7 +183,9 @@ class Telephone implements \JsonSerializable {
                 ->setIDVendeur($TelephoneSql["ID_Vendeur"])
                 ->setDatePublication(new \DateTime($TelephoneSql["DatePublication"]))
                 ->setStatut($TelephoneSql["Statut"])
-                ->setImageFileName($TelephoneSql["ImageFileName"]);
+                ->setImageFileName($TelephoneSql["ImageFileName"])
+                ->setLongitude($TelephoneSql["longitude"])
+                ->setLatitude($TelephoneSql["latitude"]);
             $TelephonesObjet[] = $Telephone;
         }
         return $TelephonesObjet;
@@ -182,7 +208,9 @@ class Telephone implements \JsonSerializable {
                 ->setIDVendeur($TelephoneSql["ID_Vendeur"])
                 ->setDatePublication(new \DateTime($TelephoneSql["DatePublication"]))
                 ->setStatut($TelephoneSql["Statut"])
-                ->setImageFileName($TelephoneSql["ImageFileName"]);
+                ->setImageFileName($TelephoneSql["ImageFileName"])
+                ->setLongitude($TelephoneSql["longitude"])
+                ->setLatitude($TelephoneSql["latitude"]);
             $TelephonesObjet[] = $Telephone;
         }
         return $TelephonesObjet;
@@ -199,8 +227,9 @@ class Telephone implements \JsonSerializable {
     public static function SqlGetById(int $id):Telephone
     {
         $requete = BDD::getInstance()->prepare('SELECT * FROM Telephones WHERE ID_Telephone=:id');
-        $requete->bindValue("id", $id, \PDO::PARAM_INT);
-        $requete->execute();
+        $requete->execute([
+            'id' => $id
+        ]);
 
         $TelephoneSql = $requete->fetch(\PDO::FETCH_ASSOC);
         $Telephone = new Telephone();
@@ -213,13 +242,15 @@ class Telephone implements \JsonSerializable {
             ->setIDVendeur($TelephoneSql["ID_Vendeur"])
             ->setDatePublication(new \DateTime($TelephoneSql["DatePublication"]))
             ->setStatut($TelephoneSql["Statut"])
-            ->setImageFileName($TelephoneSql["ImageFileName"]);
+            ->setImageFileName($TelephoneSql["ImageFileName"])
+            ->setLongitude($TelephoneSql["longitude"])
+            ->setLatitude($TelephoneSql["latitude"]);
         return $Telephone;
     }
 
     public static function SqlUpdate(Telephone $Telephone)
     {
-        $requete = BDD::getInstance()->prepare("UPDATE Telephones SET Marque=:Marque, Modele=:Modele, Caracteristiques=:Caracteristiques, Prix=:Prix, Quantite=:Quantite, ID_Vendeur=:ID_Vendeur, DatePublication=:DatePublication, Statut=:Statut, ImageFileName=:ImageFileName WHERE ID_Telephone=:ID_Telephone");
+        $requete = BDD::getInstance()->prepare("UPDATE Telephones SET Marque=:Marque, Modele=:Modele, Caracteristiques=:Caracteristiques, Prix=:Prix, Quantite=:Quantite, ID_Vendeur=:ID_Vendeur, DatePublication=:DatePublication, Statut=:Statut, ImageFileName=:ImageFileName, longitude=:longitude, latitude=:latitude WHERE ID_Telephone=:ID_Telephone");
 
         $bool = $requete->execute([
             "Marque" => $Telephone->getMarque(),
@@ -231,6 +262,8 @@ class Telephone implements \JsonSerializable {
             "DatePublication" => $Telephone->getDatePublication()->format("Y-m-d"),
             "Statut" => $Telephone->getStatut(),
             "ImageFileName" => $Telephone->getImageFileName(),
+            "longitude" => $Telephone->getLongitude(),
+            "latitude" => $Telephone->getLatitude(),
             "ID_Telephone" => $Telephone->getIDTelephone()
         ]);
     }
@@ -256,7 +289,9 @@ class Telephone implements \JsonSerializable {
                 ->setIDVendeur($TelephoneSql["ID_Vendeur"])
                 ->setDatePublication(new \DateTime($TelephoneSql["DatePublication"]))
                 ->setStatut($TelephoneSql["Statut"])
-                ->setImageFileName($TelephoneSql["ImageFileName"]);
+                ->setImageFileName($TelephoneSql["ImageFileName"])
+                ->setLongitude($TelephoneSql["longitude"])
+                ->setLatitude($TelephoneSql["latitude"]);
             $TelephonesObjet[] = $Telephone;
         }
         return $TelephonesObjet;

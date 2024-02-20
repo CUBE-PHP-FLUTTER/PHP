@@ -14,7 +14,7 @@
                             <h4 class="card-title">{{ telephone.Marque }}</h4>
                             <h5>{{ telephone.Modele }}</h5>
                             <p class="card-text">{{ telephone.Caracteristiques }}</p>
-                            <h5 class="text-primary">{{ telephone.Prix }} €</h5>
+                            <a href="/Telephone/show/{{telephone.IDTelephone}}" class="h5 streched-link">{{ telephone.Prix }} €</a>
                         </div>
                         <div class="card-footer">
                             <small class="text-muted">Publié le {{ telephone.DatePublication|date("d/m/Y") }}</small>

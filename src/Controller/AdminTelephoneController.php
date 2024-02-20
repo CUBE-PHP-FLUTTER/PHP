@@ -39,7 +39,9 @@ class AdminTelephoneController extends AbstractController
                 ->setIDVendeur(intval($_POST["ID_Vendeur"]))
                 ->setDatePublication($datePublication)
                 ->setStatut($_POST["Statut"])
-                ->setImageFileName($_POST["ImageFileName"]);
+                ->setImageFileName($_POST["ImageFileName"])
+                ->setLongitude($_POST["longitude"])
+                ->setLatitude($_POST["latitude"]);
 
             $id = Telephone::SqlAdd($telephone);
             header("Location:/Telephone/show/{$id}");
@@ -62,7 +64,9 @@ class AdminTelephoneController extends AbstractController
                 ->setIDVendeur(intval($_POST["ID_Vendeur"]))
                 ->setDatePublication($datePublication)
                 ->setStatut($_POST["Statut"])
-                ->setImageFileName($_POST["ImageFileName"]);
+                ->setImageFileName($_POST["ImageFileName"])
+                ->setLongitude($_POST["longitude"])
+                ->setLatitude($_POST["latitude"]);
 
             Telephone::SqlUpdate($telephone);
             header("Location:/Telephone/show/{$id}");
