@@ -12,8 +12,9 @@ class Telephone implements \JsonSerializable {
     private \DateTime $DatePublication;
     private string $Statut;
     private ?string $ImageFileName = null;
-    private ?float $longitude = null;
-    private ?float $latitude = null;
+    private ?string $ImageRepository = null;
+    private ?string $longitude = null;
+    private ?string $latitude = null;
 
     // Getters and Setters
     public function getIDTelephone(): ?int {
@@ -106,20 +107,29 @@ class Telephone implements \JsonSerializable {
         return $this;
     }
 
-    public function getLongitude(): ?float {
+    public function getImageRepository(): ?string {
+        return $this->ImageRepository;
+    }
+
+    public function setImageRepository(?string $ImageRepository): self {
+        $this->ImageRepository = $ImageRepository;
+        return $this;
+    }
+
+    public function getLongitude(): ?string {
         return $this->longitude;
     }
 
-    public function setLongitude(?float $longitude): self {
+    public function setLongitude(?string $longitude): self {
         $this->longitude = $longitude;
         return $this;
     }
 
-    public function getLatitude(): ?float {
+    public function getLatitude(): ?string {
         return $this->latitude;
     }
 
-    public function setLatitude(?float $latitude): self {
+    public function setLatitude(?string $latitude): self {
         $this->latitude = $latitude;
         return $this;
     }

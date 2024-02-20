@@ -4,6 +4,11 @@
 {% block body %}
     <h1>Ajout Téléphone</h1>
 
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
+
     <form method="post" enctype="multipart/form-data">
         <div class="mb-3">
             <input type="text" class="form-control" placeholder="Marque" name="Marque">
@@ -22,24 +27,52 @@
         </div>
 
         <div class="mb-3">
+            <input type="hidden" name="Statut" value="En stock">
+        </div>
+
+        <div class="mb-3">
             <input type="number" class="form-control" placeholder="Quantité" name="Quantite">
-        </div>
-
-        <div class="mb-3">
-            <input type="date" class="form-control" name="DatePublication">
-        </div>
-
-        <div class="mb-3">
-            <select class="form-select" name="Statut">
-                <option value="En stock">En stock</option>
-                <option value="Hors stock">Hors stock</option>
-            </select>
         </div>
 
         <div class="mb-3">
             <input type="file" class="form-control" name="ImageFileName">
         </div>
 
+        <div class="mb-3">
+            <label class="form-label">Adresse de livraison (recherche dans la carte)</label>
+            <input required type="text" class="form-control" id="longitude" name="longitude" value="{{ longitude_enregistree }}">
+            <input required type="text" class="form-control" id="latitude" name="latitude" value="{{ latitude_enregistree }}">
+            <div class="w-100 mt-3" style="height: 450px" id="map"></div>
+        </div>
+
+        <input type="hidden" name="ID_Vendeur" value="{{ user.id }}">
+        <!-- Utiliser la date actuelle comme date de publication -->
+        <input type="hidden" name="DatePublication" value="{{ "now"|date("Y-m-d") }}">
+
         <button type="submit" class="btn btn-primary">Valider</button>
     </form>
+
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoicmFwaGFlbDI3IiwiYSI6ImNsc2l6N29rNDI3c2YyaXBjZTF1enEycDIifQ.hB_xW4UOmwk04ZI8ncYHcQ';
+        const map = new mapboxgl.Map({
+            container: 'map',
+            center: [2.348365699659979, 48.8533425286613],
+            zoom: 5
+        });
+
+        map.addControl(
+            geocoder = new MapboxGeocoder({
+                accessToken: mapboxgl.accessToken,
+                countries: 'fr',
+                mapboxgl: mapboxgl
+            })
+        );
+
+        map.on('style.load', function() {
+            geocoder.on('result', result => {
+                document.getElementById("longitude").value = result["result"]["center"]["0"];
+                document.getElementById("latitude").value = result["result"]["center"]["1"];
+            });
+        });
+    </script>
 {% endblock %}

@@ -28,7 +28,7 @@ class AdminTelephoneController extends AbstractController
 
     public function add()
     {
-        if (isset($_POST["Marque"])) {
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $telephone = new Telephone();
             $datePublication = new \DateTime($_POST["DatePublication"]);
             $telephone->setMarque($_POST["Marque"])
@@ -39,22 +39,49 @@ class AdminTelephoneController extends AbstractController
                 ->setIDVendeur(intval($_POST["ID_Vendeur"]))
                 ->setDatePublication($datePublication)
                 ->setStatut($_POST["Statut"])
-                ->setImageFileName($_POST["ImageFileName"])
-                ->setLongitude($_POST["longitude"])
-                ->setLatitude($_POST["latitude"]);
-
+                ->setLongitude($_POST["Longitude"])
+                ->setLatitude($_POST["Latitude"]);
+    
+            // Gérer le téléchargement de l'image
+            $imageFileName = null;
+            $sqlRepository = null;
+            if (isset($_FILES["ImageFileName"]["name"])) {
+                $extensionsAutorisee = ["jpg", "jpeg", "png"];
+                $extension = pathinfo($_FILES["ImageFileName"]["name"], PATHINFO_EXTENSION);
+                if (in_array($extension, $extensionsAutorisee)) {
+                    // Créer répertoire date "2023/12"
+                    $dateNow = new \DateTime();
+                    $sqlRepository = $dateNow->format("Y/m");
+                    $repository = "./uploads/images/{$sqlRepository}";
+                    if (!is_dir($repository)) {
+                        mkdir($repository, 0777, true);
+                    }
+                    // Renommer le fichier image
+                    $imageFileName = uniqid() . "." . $extension;
+    
+                    // Envoyer le fichier dans le bon répertoire
+                    move_uploaded_file($_FILES["ImageFileName"]["tmp_name"], $repository . "/" . $imageFileName);
+                }
+            }
+            $telephone->setImageRepository($sqlRepository)
+                ->setImageFileName($imageFileName);
+    
+            // Enregistrer le téléphone dans la base de données
             $id = Telephone::SqlAdd($telephone);
-            header("Location:/Telephone/show/{$id}");
+    
+            // Rediriger vers une autre page après l'ajout
+            header("Location: /Telephone/show/{$id}");
             exit();
         } else {
             return $this->twig->render("Admin/Telephone/add.html.twig");
         }
     }
+    
 
     public function update(int $id)
     {
         $telephone = Telephone::SqlGetById($id);
-        if (isset($_POST["Marque"])) {
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $datePublication = new \DateTime($_POST["DatePublication"]);
             $telephone->setMarque($_POST["Marque"])
                 ->setModele($_POST["Modele"])
@@ -64,12 +91,19 @@ class AdminTelephoneController extends AbstractController
                 ->setIDVendeur(intval($_POST["ID_Vendeur"]))
                 ->setDatePublication($datePublication)
                 ->setStatut($_POST["Statut"])
-                ->setImageFileName($_POST["ImageFileName"])
-                ->setLongitude($_POST["longitude"])
-                ->setLatitude($_POST["latitude"]);
+                ->setLongitude($_POST["Longitude"])
+                ->setLatitude($_POST["Latitude"]);
 
+            // Gérer le téléchargement de l'image
+            $imageFileName = $_FILES['ImageFileName']['name'];
+            $imageFilePath = $_FILES['ImageFileName']['tmp_name'];
+            $destinationFolder = '/chemin/vers/dossier/destination/';
+            move_uploaded_file($imageFilePath, $destinationFolder . $imageFileName);
+            $telephone->setImageFileName($imageFileName);
             Telephone::SqlUpdate($telephone);
-            header("Location:/Telephone/show/{$id}");
+
+            // Rediriger vers une autre page après la mise à jour
+            header("Location: /Telephone/show/{$id}");
             exit();
         } else {
             return $this->twig->render("Admin/Telephone/update.html.twig", [
