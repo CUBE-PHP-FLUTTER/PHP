@@ -29,7 +29,6 @@
                     <form method="post" action="/AdminTelephone/delete">
                         <input type="hidden" name="id" value="{{ telephone.getIDTelephone }}">
                         <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
-                        {# Assurez-vous que le token CSRF est généré et passé au formulaire #}
                         <input type="hidden" name="token" value="{{ token }}">
                     </form>
                 </td>

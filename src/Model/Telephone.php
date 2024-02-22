@@ -21,7 +21,7 @@ class Telephone implements \JsonSerializable {
         return $this->ID_Telephone;
     }
 
-    public function setIDTelephone(?int $ID_Telephone): self {
+    public function setIDTelephone(?int $ID_Telephone): Telephone {
         $this->ID_Telephone = $ID_Telephone;
         return $this;
     }
@@ -30,7 +30,7 @@ class Telephone implements \JsonSerializable {
         return $this->Marque;
     }
 
-    public function setMarque(string $Marque): self {
+    public function setMarque(string $Marque): Telephone {
         $this->Marque = $Marque;
         return $this;
     }
@@ -39,7 +39,7 @@ class Telephone implements \JsonSerializable {
         return $this->Modele;
     }
 
-    public function setModele(string $Modele): self {
+    public function setModele(string $Modele): Telephone {
         $this->Modele = $Modele;
         return $this;
     }
@@ -48,7 +48,7 @@ class Telephone implements \JsonSerializable {
         return $this->Caracteristiques;
     }
 
-    public function setCaracteristiques(string $Caracteristiques): self {
+    public function setCaracteristiques(string $Caracteristiques): Telephone {
         $this->Caracteristiques = $Caracteristiques;
         return $this;
     }
@@ -57,7 +57,7 @@ class Telephone implements \JsonSerializable {
         return $this->Prix;
     }
 
-    public function setPrix(float $Prix): self {
+    public function setPrix(float $Prix): Telephone {
         $this->Prix = $Prix;
         return $this;
     }
@@ -66,7 +66,7 @@ class Telephone implements \JsonSerializable {
         return $this->Quantite;
     }
 
-    public function setQuantite(int $Quantite): self {
+    public function setQuantite(int $Quantite): Telephone {
         $this->Quantite = $Quantite;
         return $this;
     }
@@ -75,7 +75,7 @@ class Telephone implements \JsonSerializable {
         return $this->ID_Vendeur;
     }
 
-    public function setIDVendeur(int $ID_Vendeur): self {
+    public function setIDVendeur(int $ID_Vendeur): Telephone {
         $this->ID_Vendeur = $ID_Vendeur;
         return $this;
     }
@@ -84,7 +84,7 @@ class Telephone implements \JsonSerializable {
         return $this->DatePublication;
     }
 
-    public function setDatePublication(\DateTime $DatePublication): self {
+    public function setDatePublication(\DateTime $DatePublication): Telephone {
         $this->DatePublication = $DatePublication;
         return $this;
     }
@@ -93,7 +93,7 @@ class Telephone implements \JsonSerializable {
         return $this->Statut;
     }
 
-    public function setStatut(string $Statut): self {
+    public function setStatut(string $Statut): Telephone {
         $this->Statut = $Statut;
         return $this;
     }
@@ -102,7 +102,7 @@ class Telephone implements \JsonSerializable {
         return $this->ImageFileName;
     }
 
-    public function setImageFileName(?string $ImageFileName): self {
+    public function setImageFileName(?string $ImageFileName): Telephone {
         $this->ImageFileName = $ImageFileName;
         return $this;
     }
@@ -111,7 +111,7 @@ class Telephone implements \JsonSerializable {
         return $this->ImageRepository;
     }
 
-    public function setImageRepository(?string $ImageRepository): self {
+    public function setImageRepository(?string $ImageRepository): Telephone {
         $this->ImageRepository = $ImageRepository;
         return $this;
     }
@@ -120,7 +120,7 @@ class Telephone implements \JsonSerializable {
         return $this->longitude;
     }
 
-    public function setLongitude(?string $longitude): self {
+    public function setLongitude(?string $longitude): Telephone {
         $this->longitude = $longitude;
         return $this;
     }
@@ -129,7 +129,7 @@ class Telephone implements \JsonSerializable {
         return $this->latitude;
     }
 
-    public function setLatitude(?string $latitude): self {
+    public function setLatitude(?string $latitude): Telephone {
         $this->latitude = $latitude;
         return $this;
     }
@@ -147,6 +147,7 @@ class Telephone implements \JsonSerializable {
             "DatePublication" => $this->getDatePublication()->format("Y-m-d"),
             "Statut" => $this->getStatut(),
             "ImageFileName" => $this->getImageFileName(),
+            "ImageRepository" => $this->getImageRepository(),
             "Longitude" => $this->getLongitude(),
             "Latitude" => $this->getLatitude(),
         ];
@@ -155,7 +156,7 @@ class Telephone implements \JsonSerializable {
     // Database Operations
     public static function SqlAdd(Telephone $Telephone): int
     {
-        $requete = BDD::getInstance()->prepare("INSERT INTO Telephones (Marque, Modele, Caracteristiques, Prix, Quantite, ID_Vendeur, DatePublication, Statut, ImageFileName, longitude, latitude) VALUES(:Marque, :Modele, :Caracteristiques, :Prix, :Quantite, :ID_Vendeur, :DatePublication, :Statut, :ImageFileName, :longitude, :latitude)");
+        $requete = BDD::getInstance()->prepare("INSERT INTO Telephones (Marque, Modele, Caracteristiques, Prix, Quantite, ID_Vendeur, DatePublication, Statut, ImageFileName, ImageRepository, longitude, latitude) VALUES(:Marque, :Modele, :Caracteristiques, :Prix, :Quantite, :ID_Vendeur, :DatePublication, :Statut, :ImageFileName, :ImageRepository, :longitude, :latitude)");
     
         $params = [
             "Marque" => $Telephone->getMarque(),
@@ -166,8 +167,9 @@ class Telephone implements \JsonSerializable {
             "ID_Vendeur" => $Telephone->getIDVendeur(),
             "DatePublication" => $Telephone->getDatePublication()->format("Y-m-d"),
             "Statut" => $Telephone->getStatut(),
-            "Longitude" => $Telephone->getLongitude(),
-            "Latitude" => $Telephone->getLatitude(),
+            "ImageRepository" => $Telephone->getImageRepository() ?? null, // Assurez-vous que ce paramètre est toujours lié
+            "longitude" => $Telephone->getLongitude(),
+            "latitude" => $Telephone->getLatitude(),
         ];
     
         // Vérifier si une image est fournie
@@ -227,6 +229,7 @@ class Telephone implements \JsonSerializable {
                 ->setDatePublication(new \DateTime($TelephoneSql["DatePublication"]))
                 ->setStatut($TelephoneSql["Statut"])
                 ->setImageFileName($TelephoneSql["ImageFileName"])
+                ->setImageRepository($TelephoneSql["ImageRepository"])
                 ->setLongitude($TelephoneSql["Longitude"])
                 ->setLatitude($TelephoneSql["Latitude"]);
             $TelephonesObjet[] = $Telephone;

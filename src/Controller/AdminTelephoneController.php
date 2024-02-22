@@ -63,6 +63,7 @@ class AdminTelephoneController extends AbstractController
                     move_uploaded_file($_FILES["ImageFileName"]["tmp_name"], $repository . "/" . $imageFileName);
                 }
             }
+            
             $telephone->setImageRepository($sqlRepository)
                 ->setImageFileName($imageFileName);
     

@@ -21,13 +21,6 @@ class ApiTelephoneController
                 "Message" => "Get Attendu"
             ]);
         }
-        $result = JwtService::checkToken();
-        if ($result["code"] == 1) {
-            return json_encode($result);
-        }
-        if (!in_array("Administrateur", $result["data"]->roles)) {
-            return json_encode("Vous n'avez pas le bon rôle");
-        }
 
         $telephones = Telephone::SqlGetAll();
         return json_encode($telephones);
