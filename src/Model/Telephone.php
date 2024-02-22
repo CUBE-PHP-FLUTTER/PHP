@@ -158,7 +158,7 @@ class Telephone implements \JsonSerializable {
     {
         $requete = BDD::getInstance()->prepare("INSERT INTO Telephones (Marque, Modele, Caracteristiques, Prix, Quantite, ID_Vendeur, DatePublication, Statut, ImageFileName, ImageRepository, longitude, latitude) VALUES(:Marque, :Modele, :Caracteristiques, :Prix, :Quantite, :ID_Vendeur, :DatePublication, :Statut, :ImageFileName, :ImageRepository, :longitude, :latitude)");
     
-        $params = [
+        $requete->execute([
             "Marque" => $Telephone->getMarque(),
             "Modele" => $Telephone->getModele(),
             "Caracteristiques" => $Telephone->getCaracteristiques(),
@@ -167,17 +167,11 @@ class Telephone implements \JsonSerializable {
             "ID_Vendeur" => $Telephone->getIDVendeur(),
             "DatePublication" => $Telephone->getDatePublication()->format("Y-m-d"),
             "Statut" => $Telephone->getStatut(),
-            "ImageRepository" => $Telephone->getImageRepository() ?? null, // Assurez-vous que ce paramètre est toujours lié
+            "ImageRepository" => $Telephone->getImageRepository(),
+            "ImageFileName" => $Telephone->getImageFileName(),
             "longitude" => $Telephone->getLongitude(),
             "latitude" => $Telephone->getLatitude(),
-        ];
-    
-        // Vérifier si une image est fournie
-        if ($Telephone->getImageFileName() !== null) {
-            $params["ImageFileName"] = $Telephone->getImageFileName();
-        }
-    
-        $requete->execute($params);
+        ]);
     
         return BDD::getInstance()->lastInsertId();
     }
@@ -204,6 +198,7 @@ class Telephone implements \JsonSerializable {
                 ->setDatePublication(new \DateTime($TelephoneSql["DatePublication"]))
                 ->setStatut($TelephoneSql["Statut"])
                 ->setImageFileName($TelephoneSql["ImageFileName"])
+                ->setImageRepository($TelephoneSql["ImageRepository"])
                 ->setLongitude($TelephoneSql["Longitude"])
                 ->setLatitude($TelephoneSql["Latitude"]);
             $TelephonesObjet[] = $Telephone;

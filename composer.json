@@ -1,5 +1,7 @@
 {
     "require": {
-        "twig/twig": "^3.8"
+        "twig/twig": "^3.8",
+        "firebase/php-jwt": "^6.10",
+        "symfony/var-dumper": "^7.0"
     }
 }

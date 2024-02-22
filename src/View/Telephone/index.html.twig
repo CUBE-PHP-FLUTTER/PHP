@@ -9,7 +9,13 @@
             {% for telephone in telephones %}
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="card h-100">
-                        <img class="card-img-top" src="http://172.20.10.2/uploads/images/{{ telephone.getImageRepository() }}/{{ telephone.getImageFileName() }}" alt="{{ telephone.getMarque() }} {{ telephone.getModele() }}">
+                        <a href="/Telephone/show/{{ telephone.IDTelephone }}">
+                        {% if telephone.ImageRepository != null and telephone.ImageFilename != null %}
+                            <img src="/uploads/images/{{ telephone.ImageRepository }}/{{ telephone.ImageFilename }}" style="height: 195px" class="object-fit-cover w-100">
+                        {% else %}
+                            <p>Aucune Image</p>
+                        {% endif %}
+                         </a>
                             alt="{{ telephone.getMarque() }} {{ telephone.getModele() }}">
                         <div class="card-body">
                             <h4 class="card-title">{{ telephone.getMarque() }}</h4>

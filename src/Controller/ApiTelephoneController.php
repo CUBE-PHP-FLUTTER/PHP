@@ -28,6 +28,16 @@ class ApiTelephoneController
 
     public function add()
     {
+        $result = JwtService::checkToken();
+        if($result ["code"] != 0)
+        {
+            header("HTTP/1.1 401 Unauthorized");
+            return json_encode([
+                "code" => 1,
+                "Message" => "JWT INVALID"
+            ]);   
+        }
+
         if ($_SERVER["REQUEST_METHOD"] != "POST") {
             header("HTTP/1.1 405 Method Not Allowed");
             return json_encode([
@@ -78,7 +88,11 @@ class ApiTelephoneController
             ->setIDVendeur($json->ID_Vendeur)
             ->setDatePublication(new \DateTime($json->DatePublication))
             ->setStatut($json->Statut)
-            ->setImageFileName($nomImage);
+            ->setImageFileName($nomImage)
+            ->setLongitude($json->Longitude)
+            ->setLatitude($json->Latitude);
+
+
 
         $id = Telephone::SqlAdd($telephone);
         return json_encode([
