@@ -155,9 +155,9 @@ class Telephone implements \JsonSerializable {
     // Database Operations
     public static function SqlAdd(Telephone $Telephone): int
     {
-        $requete = BDD::getInstance()->prepare("INSERT INTO Telephones (Marque, Modele, Caracteristiques, Prix, Quantite, ID_Vendeur, DatePublication, Statut, ImageFileName, ImageRepository, longitude, latitude) VALUES(:Marque, :Modele, :Caracteristiques, :Prix, :Quantite, :ID_Vendeur, :DatePublication, :Statut, :ImageFileName, :ImageRepository, :longitude, :latitude)");
+        $requete = BDD::getInstance()->prepare("INSERT INTO Telephones (Marque, Modele, Caracteristiques, Prix, Quantite, ID_Vendeur, DatePublication, Statut, ImageFileName, longitude, latitude) VALUES(:Marque, :Modele, :Caracteristiques, :Prix, :Quantite, :ID_Vendeur, :DatePublication, :Statut, :ImageFileName, :longitude, :latitude)");
     
-        $requete->execute([
+        $params = [
             "Marque" => $Telephone->getMarque(),
             "Modele" => $Telephone->getModele(),
             "Caracteristiques" => $Telephone->getCaracteristiques(),
@@ -166,14 +166,20 @@ class Telephone implements \JsonSerializable {
             "ID_Vendeur" => $Telephone->getIDVendeur(),
             "DatePublication" => $Telephone->getDatePublication()->format("Y-m-d"),
             "Statut" => $Telephone->getStatut(),
-            "ImageFileName" => $Telephone->getImageFileName(),
-            "ImageRepository" => $Telephone->getImageRepository(), // Correction du nom de la colonne
-            "longitude" => $Telephone->getLongitude(),
-            "latitude" => $Telephone->getLatitude(),
-        ]);
+            "Longitude" => $Telephone->getLongitude(),
+            "Latitude" => $Telephone->getLatitude(),
+        ];
+    
+        // Vérifier si une image est fournie
+        if ($Telephone->getImageFileName() !== null) {
+            $params["ImageFileName"] = $Telephone->getImageFileName();
+        }
+    
+        $requete->execute($params);
     
         return BDD::getInstance()->lastInsertId();
     }
+    
     
     
     public static function SqlGetLast(int $nb)
