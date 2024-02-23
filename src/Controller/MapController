@@ -9,12 +9,9 @@ class MapController extends AbstractController
     public function show(int $id)
     {
         $telephone = Telephone::SqlGetById($id);
-
-        // Obtenez la longitude et la latitude du téléphone
         $longitude = $telephone->getLongitude();
         $latitude = $telephone->getLatitude();
 
-        // Appeler une fonction pour obtenir l'adresse à partir des coordonnées de longitude et de latitude
         $address = $this->getAddressFromCoordinates($longitude, $latitude);
 
         return $this->twig->render("map/show.html.twig", [
@@ -25,7 +22,6 @@ class MapController extends AbstractController
         ]);
     }
 
-    // Fonction pour obtenir l'adresse à partir des coordonnées de longitude et de latitude
     private function getAddressFromCoordinates($longitude, $latitude)
     {
         $access_token = 'Votre_access_token_Mapbox';

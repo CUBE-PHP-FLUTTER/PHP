@@ -42,18 +42,12 @@ class TelephoneController extends AbstractController
     public function fixtures()
     {
         UserController::haveGoodRole(["Administrateur"]);
-
-        // Supprimer tous les enregistrements existants dans la table des téléphones
         Telephone::SqlTruncateTable();
-
-        // Jeu de données pour les marques et modèles de téléphone
         $arrayMarque = ["Apple", "Samsung", "Google", "Huawei", "Xiaomi"];
         $arrayModele = ["iPhone 13", "Galaxy S21", "Pixel 6", "P40", "Mi 11"];
 
-        // Date actuelle
         $dateDuJour = new \DateTime();
 
-        // Insertion de 200 entrées de données de téléphone avec des valeurs aléatoires
         for ($i = 1; $i <= 200; $i++) {
             $dateDuJour->modify("+1 day");
             shuffle($arrayMarque);

@@ -26,11 +26,10 @@ class UserController extends AbstractController
 
     public function login()
     {
+        //Requet pour allez chercher les données user et les tester
         if(isset($_POST["mail"]) && isset($_POST["password"])){
-            //Requete SQL qui va cherches les info du User avec le mail
             $user = User::SqlGetByMail($_POST["mail"]);
             if($user!=null){
-                //Comparer le mdp hasché avec celui saisi dans le formulaire
                 if(password_verify($_POST["password"], $user->getPassword())){
                     $_SESSION["login"] = [
                         "Email" => $user->getMail(),
@@ -43,10 +42,6 @@ class UserController extends AbstractController
             }else{
                 throw new \Exception("Aucun user avec ce mail en base");
             }
-
-
-            //Créer les sessions sinon Lever une Exception
-            // Et rediriger vers /AdminTelephone/list
         }else{
             return $this->twig->render("User/login.html.twig");
         }
@@ -86,10 +81,7 @@ class UserController extends AbstractController
                 "Message" => "POST Attendu"
             ]);
         }
-
-        //Récupération du body en String
         $data = file_get_contents("php://input");
-        //Conversion du string en JSON
         $json = json_decode($data);
 
         if(empty($json)){
@@ -107,7 +99,6 @@ class UserController extends AbstractController
                 "Message" => "Il manque le mail ou le password"
             ]);
         }
-        // Récupérer les info de l'utilisateur par son mail
         $user = User::SqlGetByMail($json->mail);
         if($user == null){
             header("HTTP/1.1 403 Forbiden");
@@ -116,7 +107,6 @@ class UserController extends AbstractController
                 "Message" => "User inexistant"
             ]);
         }
-        // Comparer le mot de pase avec celui hashé en bdd
         if(!password_verify($json->password, $user->getPassword())){
             header("HTTP/1.1 403 Forbiden");
             return json_encode([

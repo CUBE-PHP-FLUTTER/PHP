@@ -12,7 +12,7 @@ class ApiTelephoneController
         header("Content-Type: application/json; charset=utf-8");
     }
 
-    public function getAll()
+    public function getAll(int $page)
     {
         if ($_SERVER["REQUEST_METHOD"] != "GET") {
             header("HTTP/1.1 405 Method Not Allowed");
@@ -22,7 +22,8 @@ class ApiTelephoneController
             ]);
         }
 
-        $telephones = Telephone::SqlGetAll();
+        $offset = ($page - 1) * 30;
+        $telephones = Telephone::SqlGetAllWithPagination($offset);
         return json_encode($telephones);
     }
 

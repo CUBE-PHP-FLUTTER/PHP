@@ -232,6 +232,32 @@ class Telephone implements \JsonSerializable {
         return $TelephonesObjet;
     }
 
+    public static function SqlGetAllWithPagination(int $offset)
+    {
+        $requete = BDD::getInstance()->prepare("SELECT * FROM Telephones LIMIT 30 OFFSET $offset");
+        $requete->execute();
+        $TelephonesSql = $requete->fetchAll(\PDO::FETCH_ASSOC);
+        $TelephonesObjet = [];
+        foreach ($TelephonesSql as $TelephoneSql){
+            $Telephone = new Telephone();
+            $Telephone->setIDTelephone($TelephoneSql["ID_Telephone"])
+                ->setMarque($TelephoneSql["Marque"])
+                ->setModele($TelephoneSql["Modele"])
+                ->setCaracteristiques($TelephoneSql["Caracteristiques"])
+                ->setPrix($TelephoneSql["Prix"])
+                ->setQuantite($TelephoneSql["Quantite"])
+                ->setIDVendeur($TelephoneSql["ID_Vendeur"])
+                ->setDatePublication(new \DateTime($TelephoneSql["DatePublication"]))
+                ->setStatut($TelephoneSql["Statut"])
+                ->setImageFileName($TelephoneSql["ImageFileName"])
+                ->setImageRepository($TelephoneSql["ImageRepository"])
+                ->setLongitude($TelephoneSql["Longitude"])
+                ->setLatitude($TelephoneSql["Latitude"]);
+            $TelephonesObjet[] = $Telephone;
+        }
+        return $TelephonesObjet;
+    }
+
     public static function SqlDelete(int $idTelephone)
     {
         $requete = BDD::getInstance()->prepare("DELETE FROM Telephones WHERE ID_Telephone=:ID_Telephone");
