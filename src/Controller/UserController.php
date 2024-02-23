@@ -9,6 +9,7 @@ class UserController extends AbstractController
 {
     public function create()
     {
+        UserController::haveGoodRole(["Administrateur"]);
         if(isset($_POST["mail"]) && isset($_POST["password"]) && isset($_POST["roles"])){
             $user = new User();
             $hashpass = password_hash($_POST["password"], PASSWORD_BCRYPT, ["cost"=>12]);
